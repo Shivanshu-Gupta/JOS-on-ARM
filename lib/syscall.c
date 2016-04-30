@@ -1,4 +1,5 @@
 #include <lib/syscall.h>
+#include <types.h>
 
 int syscall0(enum SystemCallCode code)
 {
@@ -33,6 +34,51 @@ int syscall2(enum SystemCallCode code, int arg1, int arg2)
 	__asm__ volatile("swi #0");
 	__asm__ volatile("str r0, %0" : "=m" (result));
 	
+	return result;
+}
+
+int syscall3(enum SystemCallCode code, int arg1, int arg2, int arg3)
+{
+	int result;
+
+	__asm__ volatile("ldr r0, %0" : : "m" (code));
+	__asm__ volatile("ldr r1, %0" : : "m" (arg1));
+	__asm__ volatile("ldr r2, %0" : : "m" (arg2));
+	__asm__ volatile("ldr r3, %0" : : "m" (arg3));
+	__asm__ volatile("swi #0");
+	__asm__ volatile("str r0, %0" : "=m" (result));
+
+	return result;
+}
+
+int syscall4(enum SystemCallCode code, int arg1, int arg2, int arg3, int arg4)
+{
+	int result;
+
+	__asm__ volatile("ldr r0, %0" : : "m" (code));
+	__asm__ volatile("ldr r1, %0" : : "m" (arg1));
+	__asm__ volatile("ldr r2, %0" : : "m" (arg2));
+	__asm__ volatile("ldr r3, %0" : : "m" (arg3));
+	__asm__ volatile("ldr r4, %0" : : "m" (arg4));
+	__asm__ volatile("swi #0");
+	__asm__ volatile("str r0, %0" : "=m" (result));
+
+	return result;
+}
+
+int syscall5(enum SystemCallCode code, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+	int result;
+
+	__asm__ volatile("ldr r0, %0" : : "m" (code));
+	__asm__ volatile("ldr r1, %0" : : "m" (arg1));
+	__asm__ volatile("ldr r2, %0" : : "m" (arg2));
+	__asm__ volatile("ldr r3, %0" : : "m" (arg3));
+	__asm__ volatile("ldr r4, %0" : : "m" (arg4));
+	__asm__ volatile("ldr r5, %0" : : "m" (arg5));
+	__asm__ volatile("swi #0");
+	__asm__ volatile("str r0, %0" : "=m" (result));
+
 	return result;
 }
 
@@ -74,4 +120,19 @@ void yield(void)
 void wait(int id)
 {
 	syscall1(SYSCALL_WAIT, id);
+}
+
+int page_alloc(int pid, uint32_t va, int perm)
+{
+	return syscall3(SYSCALL_PAGE_ALLOC, pid, va, perm);
+}
+
+int page_map(int srcpid, uint32_t srcva, int destpid, uint32_t destva, int perm)
+{
+	return syscall5(SYSCALL_PAGE_MAP, srcpid, srcva, destpid, destva, perm);
+}
+
+int page_unmap(int pid, uint32_t va)
+{
+	return syscall2(SYSCALL_PAGE_ALLOC, pid, va);
 }

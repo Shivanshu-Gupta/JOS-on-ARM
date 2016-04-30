@@ -103,6 +103,7 @@ static char * const implementor_string[128] = {
 	[0x69] = "Intel Corporation"
 };
 
+// defined in system.S
 void enable_interrupts(void);
 char *get_stack_pointer(int cpu_mode);
 int read_cpsr(void);

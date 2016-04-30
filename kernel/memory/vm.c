@@ -136,6 +136,22 @@ void unmap_page(struct SectionTableEntry *vm, uint32_t virtual_addr)
 	page_table[page_index].desc_type = 0;
 }
 
+uint32_t page_lookup(struct SectionTableEntry *vm, uint32_t va, struct PageTableEntry **pte) {
+	struct SectionTableEntry *section = NULL;
+	struct PageTableEntry *page = NULL;
+	uint32_t result = 0;
+	void *base_address = 0;
+
+	section = (void *) ((uint32_t) vm | (SECTION_INDEX(va) << 2));
+	base_address = (void *) (section->base_address << 10);
+	page = (void *) ((uint32_t) base_address | (PAGE_INDEX(va) << 2));
+	*pte = page;
+	page = (void *) P2V(page);
+	result = (page->base_address << 12) | (va & 0xfff);
+
+	return result;	
+}
+
 /*
  * resolve_physical_address simulates the virtual memory hardware and maps the
  * given virtual address to physical address. This function can be used for

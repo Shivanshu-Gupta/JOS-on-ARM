@@ -100,6 +100,7 @@ extern struct Process process_table[PROCESS_COUNT_MAX];
 
 /* proc.c */
 void proc_init(void);
+int pid2proc(int pid, struct Process **proc_store);
 struct Process *proc_create(void);
 void proc_free(struct Process *proc);
 void proc_expand_memory(struct Process *proc, int page_count);
@@ -122,6 +123,9 @@ int syscall_fork(void);
 int syscall_exec(int id);
 int syscall_yield(void);
 int syscall_wait(int id);
+int syscall_page_alloc(int pid, uint32_t va, int perm);
+int syscall_page_map(int srcpid, uint32_t srcva, int destpid, uint32_t destva, int perm);
+int syscall_page_unmap(int pid, uint32_t va);
 
 #endif
 #endif

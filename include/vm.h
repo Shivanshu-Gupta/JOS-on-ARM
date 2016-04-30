@@ -34,6 +34,7 @@ extern char kernel_end[];
 
 /* memory layout */
 #define KERNEL_STACK_BOTTOM (KERNEL_BASE - 2 * PAGE_SIZE)
+#define USER_TOP KERNEL_STACK_BOTTOM // assuming all user can use all the memory below this
 #define USER_STACK_BOTTOM (KERNEL_BASE - 3 * PAGE_SIZE)
 #define KERNEL_SECTION_TABLE ((uint32_t) kernel_end)
 #define MMIO_BASE (KERNEL_BASE + 0x40000000)
@@ -43,7 +44,7 @@ extern char kernel_end[];
 #define MMIO_P2V(x) ((volatile unsigned int*) (MMIO_BASE + (x - MMIO_BASE_PHYSICAL)))
 
 /* page table */
-#define PAGES_PER_SECTION 1024
+#define PAGES_PER_SECTION 256
 #define SECTION_COUNT 4096
 #define PAGE_SIZE 4096
 #define SECTION_SIZE (PAGE_SIZE * PAGES_PER_SECTION)
@@ -100,6 +101,6 @@ void free_vm_page_tables(struct SectionTableEntry *vm);
 void unmap_page(struct SectionTableEntry *vm, uint32_t virtual_addr);
 uint32_t resolve_physical_address(struct SectionTableEntry *vm,
 				  uint32_t virtual_address);
-
+uint32_t page_lookup(struct SectionTableEntry *vm, uint32_t va, struct PageTableEntry **pte);
 #endif
 #endif

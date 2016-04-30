@@ -9,3 +9,7 @@ OBJS += $(PROC_DIR)/syscall_fork.o
 OBJS += $(PROC_DIR)/syscall_exec.o
 OBJS += $(PROC_DIR)/syscall_yield.o
 OBJS += $(PROC_DIR)/syscall_wait.o
+OBJS += $(PROC_DIR)/syscall_page_alloc.o
+OBJS += $(PROC_DIR)/syscall_page_map.o
+OBJS += $(PROC_DIR)/syscall_page_unmap.o
+

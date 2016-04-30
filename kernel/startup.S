@@ -7,11 +7,12 @@ entry:
 
 	bl enable_paging
 	bl copy_interrupt_table
-	bl use_high_interrupts
-	bl enable_interrupts
 
-	bl jump_to_high_mem
-	bl c_entry
+	bl use_high_interrupts 		
+	bl enable_interrupts 		
+	bl jump_to_high_mem			
+
+	bl c_entry					
 
 enable_paging:
 	mov r2, lr
@@ -35,8 +36,9 @@ copy_interrupt_table:
 	ldr r3, =interrupt_table_end
 	
 	copy_loop_start:
-		ldr r2, [r1, #0x0]
-		str r2, [r0, #0x0]
+		ldr r2, [r1, #0x0]	
+		str r2, [r0, #0x0]	
+
 		add r0, r0, #0x4
 		add r1, r1, #0x4
 		cmp r1, r3
@@ -49,11 +51,12 @@ interrupt_table_start:
 	subs pc, lr, #4
 	ldr pc, syscall_entry_address
 	subs pc, lr, #4
-	subs pc, lr, #4
+	ldr pc, data_abort_entry_address
 	subs pc, lr, #4
 	ldr pc, irq_entry_address
 	syscall_entry_address: .word syscall_entry
 	irq_entry_address: .word irq_entry
+	data_abort_entry_address: .word data_abort_entry
 interrupt_table_end:
 
 syscall_entry:
@@ -76,3 +79,13 @@ irq_entry:
 	bl dispatch_interrupts
 
 	ldmfd r13!, {r0-r12, pc}^
+
+data_abort_entry:
+	ldr sp, =kernel_stack_start
+	SAVE_CONTEXT
+
+	stmfd r13!, {r1-r12, r14}
+
+	bl handle_data_abort
+
+	ldmfd r13!, {r1-r12, pc}^

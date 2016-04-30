@@ -9,7 +9,8 @@ USER_PROGRAMS = user/shell \
 		user/hello \
 		user/fork_test \
 		user/exec_test \
-		user/concurrency_test
+		user/concurrency_test \
+		user/faultread
 EXTRA_CLEAN += $(USER_PROGRAMS) user/base16 user/user_programs.c
 
 user/%: user/%.c lib/libarunos.a
