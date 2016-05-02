@@ -55,6 +55,13 @@ struct Process {
 
 	int wait_pid;
 	int child_return_value;
+
+	//adding fields for ipc_recv
+	bool proc_ipc_recving;		// proc is blocked receiving
+	uint32_t proc_ipc_dstva;		// VA at which to map received page
+	uint32_t proc_ipc_value;		// Data value sent to us
+	int proc_ipc_from;		// procid of the sender
+	int proc_ipc_perm;		// Perm of page mapping received
 };
 
 #define ELF_MAGIC 0x464C457FU

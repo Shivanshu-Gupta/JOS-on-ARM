@@ -21,8 +21,8 @@ enum SystemCallCode {
 	SYSCALL_PAGE_ALLOC,
 	SYSCALL_PAGE_MAP,
 	SYSCALL_PAGE_UNMAP
-	// SYSCALL_IPC_TRY_SEND,
-	// SYSCALL_RECV
+	SYSCALL_IPC_TRY_SEND,
+	SYSCALL_IPC_RECV
 };
 
 int syscall0(enum SystemCallCode code);

@@ -12,6 +12,7 @@ int syscall_page_alloc(int pid, uint32_t va, int perm)
 	if(va >= USER_TOP || va != ROUND_DOWN(va, PAGE_SIZE)) {
 		return -1;
 	} 
+	//perm setting case is not handled
 	char *page = kalloc();
 	memset(page, 0, PAGE_SIZE);
 
@@ -19,7 +20,7 @@ int syscall_page_alloc(int pid, uint32_t va, int perm)
 		va,
 		V2P(page),
 		V2P(page) + PAGE_SIZE,
-		AP_RW_RW
+		AP_RW_RW//shouldn't this be perm??
 	});
 
 	return 0;
