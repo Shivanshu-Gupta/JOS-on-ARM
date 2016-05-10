@@ -15,7 +15,7 @@ static int (*const syscall_handler[])() = {
 	[SYSCALL_WAIT] = syscall_wait,
 	[SYSCALL_PAGE_ALLOC] = syscall_page_alloc,
 	[SYSCALL_PAGE_MAP] = syscall_page_map,
-	[SYSCALL_PAGE_UNMAP] = syscall_page_unmap
+	[SYSCALL_PAGE_UNMAP] = syscall_page_unmap,
 	[SYSCALL_IPC_TRY_SEND] = syscall_ipc_try_send,
 	[SYSCALL_IPC_RECV] = syscall_ipc_recv
 };

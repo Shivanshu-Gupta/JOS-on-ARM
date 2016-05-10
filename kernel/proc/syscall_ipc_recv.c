@@ -14,7 +14,7 @@ int syscall_ipc_recv(uint32_t dstva)
 	//what to do of reg.eax??
 	//curenv->env_tf.tf_regs.reg_eax = 0;
 
-	current_process->ProcessState = SLEEPING;
+	current_process->state = SLEEPING;
 	schedule();
 	return 0;
 }

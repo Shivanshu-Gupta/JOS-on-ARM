@@ -12,4 +12,6 @@ OBJS += $(PROC_DIR)/syscall_wait.o
 OBJS += $(PROC_DIR)/syscall_page_alloc.o
 OBJS += $(PROC_DIR)/syscall_page_map.o
 OBJS += $(PROC_DIR)/syscall_page_unmap.o
+OBJS += $(PROC_DIR)/syscall_ipc_try_send.o
+OBJS += $(PROC_DIR)/syscall_ipc_recv.o
 

@@ -19,13 +19,13 @@ int syscall_ipc_try_send(int pid, uint32_t value, uint32_t srcva, int perm)
 	} 
 
 	//perm settings case not handled
-	if((uint32_t)proc->proc_ipc_dstva<USER_TOP  && (uint32_t)srcva < USER_TOP)//receiver should receive a page
+	if(proc->proc_ipc_dstva<USER_TOP  && srcva < USER_TOP)//receiver should receive a page
 	{
 		//no problem till now, things are fine and receiver wants to receive
 		struct PageTableEntry *pte;
-		char *page = (char *)page_lookup(srcproc->vm, srcva, &pte);
+		char *page = (char *)page_lookup(current_process->vm, srcva, &pte);
 		
-		if(((perm)&(AP_RW_RW)) && (((pte->access_permissions)&(AP_RW_W)) == 0)) 
+		if((perm & AP_RW_RW) && ((pte->access_permissions & AP_RW_RW) == 0)) 
 		{
 			return -1;
 		}
@@ -42,7 +42,7 @@ int syscall_ipc_try_send(int pid, uint32_t value, uint32_t srcva, int perm)
 	proc->proc_ipc_recving = 0;
 	proc->proc_ipc_from = current_process->pid;
 	proc->proc_ipc_value = value;
-	proc->ProcessState = READY;
+	proc->state = READY;
 
 	return 0;
 }
