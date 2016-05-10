@@ -36,8 +36,8 @@ int syscall_ipc_try_send(int pid, uint32_t value, uint32_t srcva, int perm)
 			V2P(page) + PAGE_SIZE,
 			perm
 		});
-
 	}
+	
 	proc->proc_ipc_perm = perm;//means page is transferred
 	proc->proc_ipc_recving = 0;
 	proc->proc_ipc_from = current_process->pid;
