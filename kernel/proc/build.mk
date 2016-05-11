@@ -14,4 +14,6 @@ OBJS += $(PROC_DIR)/syscall_page_map.o
 OBJS += $(PROC_DIR)/syscall_page_unmap.o
 OBJS += $(PROC_DIR)/syscall_ipc_try_send.o
 OBJS += $(PROC_DIR)/syscall_ipc_recv.o
+OBJS += $(PROC_DIR)/syscall_ipc_data.o
+OBJS += $(PROC_DIR)/syscall_exofork.o
 

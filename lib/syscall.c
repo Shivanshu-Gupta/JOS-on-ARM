@@ -1,4 +1,5 @@
 #include <lib/syscall.h>
+#include <lib/stdio.h>
 #include <types.h>
 
 int syscall0(enum SystemCallCode code)
@@ -134,5 +135,36 @@ int page_map(int srcpid, uint32_t srcva, int destpid, uint32_t destva, int perm)
 
 int page_unmap(int pid, uint32_t va)
 {
-	return syscall2(SYSCALL_PAGE_ALLOC, pid, va);
+	return syscall2(SYSCALL_PAGE_UNMAP, pid, va);
+}
+
+// int sys_ipc_try_send(int pid, uint32_t value, uint32_t srcva, int perm) 
+// {
+// 	printf("sys_ipc_try_send : pid = %d, value = %d, srcva = %x, perm = %d\n", pid, value, srcva, perm);
+// 	return syscall4(SYSCALL_IPC_TRY_SEND, pid, value, srcva, perm);
+// }
+
+// int sys_ipc_recv(uint32_t dstva) 
+// {
+// 	return syscall1(SYSCALL_IPC_RECV, dstva);
+// }
+
+// void sys_ipc_data(int *srcpid, uint32_t *value, int *perm_store) 
+// {
+// 	syscall3(SYSCALL_IPC_DATA, (uintptr_t)srcpid, (uintptr_t)value, (uintptr_t)perm_store);
+// }
+
+int sys_ipc_try_send(int pid, uint32_t value) 
+{
+	return syscall2(SYSCALL_IPC_TRY_SEND, pid, value);
+}
+
+int sys_ipc_recv(uint32_t dstva) 
+{
+	return syscall1(SYSCALL_IPC_RECV, dstva);
+}
+
+void sys_ipc_data(int *srcpid, uint32_t *value) 
+{
+	syscall2(SYSCALL_IPC_DATA, (uintptr_t)srcpid, (uintptr_t)value);
 }

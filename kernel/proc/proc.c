@@ -3,7 +3,6 @@
 #include <kalloc.h>
 #include <klib.h>
 #include <lib/string.h>
-#include <lib/stdio.h>
 #include <system.h>
 #include <types.h>
 
@@ -24,13 +23,12 @@ void proc_init(void)
 
 int pid2proc(int pid, struct Process **proc_store) {
 	struct Process *proc;
-
 	if(pid == 0) {
 		*proc_store = current_process;
 		return 0;
 	}
 
-	proc = &process_table[pid];
+	proc = &process_table[pid - 1];
 	if(proc->state == UNUSED || proc->pid != pid) {
 		*proc_store = 0;
 		return -1;
