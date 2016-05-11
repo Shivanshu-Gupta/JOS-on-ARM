@@ -133,9 +133,9 @@ int syscall_wait(int id);
 int syscall_page_alloc(int pid, uint32_t va, int perm);
 int syscall_page_map(int srcpid, uint32_t srcva, int destpid, uint32_t destva, int perm);
 int syscall_page_unmap(int pid, uint32_t va);
-int syscall_ipc_try_send(int pid, uint32_t value);
+int syscall_ipc_try_send(int pid, uint32_t *data);
 int syscall_ipc_recv(uint32_t dstva);
-int syscall_ipc_data(int *srcpid, uint32_t *value);
+int syscall_ipc_data(int *srcpid, uint32_t *data_stores[]);
 int syscall_exofork();
 
 #endif

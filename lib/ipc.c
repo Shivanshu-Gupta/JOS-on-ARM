@@ -5,11 +5,8 @@
 #include <vm.h>
 
 uint32_t
-// ipc_recv(int *srcpid, void *pg, int *perm_store)
-ipc_recv(int *srcpid, void *pg)
+ipc_recv(int *srcpid, void *pg, uint32_t *perm_store)
 {
-	// LAB 4: Your code here.
-	//panic("ipc_recv not implemented");
 	void *dstva = (pg == NULL ? (void *)(USER_TOP + 1) : pg);
 
 	// printf("ipc_recv : calling sys_ipc_recv\n");
@@ -22,29 +19,26 @@ ipc_recv(int *srcpid, void *pg)
 	}
 	
 	uint32_t value;
-	sys_ipc_data(srcpid, &value);
+	sys_ipc_data(srcpid, &value, perm_store);
 
 	return value;
 }
 
 void
-// ipc_send(int destpid, uint32_t val, void *pg)
-ipc_send(int destpid, uint32_t val)
+ipc_send(int destpid, uint32_t value, void *pg, uint32_t perm)
 {
-	// LAB 4: Your code here.
-	// panic("ipc_send not implemented");
 	int r;
-	// uint32_t srcva = (pg == NULL ? (USER_TOP + 1) : (uint32_t)pg);
+	uint32_t srcva = (pg == NULL ? (USER_TOP + 1) : (uint32_t)pg);
+	
 	while(1) {
-		// printf("trying to send %d to %d\n", val, destpid);
-		r = sys_ipc_try_send(destpid, val);
+		r = sys_ipc_try_send(destpid, value, srcva, perm);
 		// printf("r = %d\n", r);
 		if(r == 0)
 			return;
 		else if(r == -2) {
 			yield();
 		} else {
-			// printf("ipc_send : %d\n", r);
+			printf("ipc_send : %d\n", r);
 		}
 		
 	}
@@ -68,27 +62,4 @@ ipc_send(int destpid, uint32_t val)
 // 	sys_ipc_data(srcpid, NULL, perm_store);
 
 // 	return 0;
-// }
-
-// void
-// // ipc_send(int destpid, uint32_t val, void *pg)
-// ipc_send_pg(int destpid, uint32_t val)
-// {
-// 	// LAB 4: Your code here.
-// 	// panic("ipc_send not implemented");
-// 	int r;
-// 	// uint32_t srcva = (pg == NULL ? (USER_TOP + 1) : (uint32_t)pg);
-// 	while(1) {
-// 		// printf("trying to send %d to %d\n", val, destpid);
-// 		r = sys_ipc_try_send(destpid, val);
-// 		// printf("r = %d\n", r);
-// 		if(r == 0)
-// 			return;
-// 		else if(r == -2) {
-// 			yield();
-// 		} else {
-// 			// printf("ipc_send : %d\n", r);
-// 		}
-		
-// 	}
 // }

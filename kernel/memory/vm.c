@@ -142,9 +142,9 @@ uint32_t page_lookup(struct SectionTableEntry *vm, uint32_t va, struct PageTable
 	uint32_t result = 0;
 	void *base_address = 0;
 
-	section = (void *) ((uint32_t) vm | (SECTION_INDEX(va) << 2));
+	section = (void *) ((uint32_t) vm | ((va >> 20) << 2));
 	base_address = (void *) (section->base_address << 10);
-	page = (void *) ((uint32_t) base_address | (PAGE_INDEX(va) << 2));
+	page = (void *) ((uint32_t) base_address | ((va >> 10) & 0x3fc));
 	*pte = page;
 	page = (void *) P2V(page);
 	result = (page->base_address << 12) | (va & 0xfff);

@@ -10,16 +10,23 @@ void _start()
 	pid = getpid();
 	printf("hello from pid: %d, fork returned: %d\n", pid, fork_result);
 	int value = 100;
+	void *pg = 0x80000000 - 4 * 4096;
 	int who;
 	if(fork_result) {
+		page_alloc(0, (uint32_t)pg, 0xff);
+		int *msg = (int *)pg;
+		msg[0] = 100;
+		msg[1] = 200;
+		msg[2] = 300;
 		who = fork_result;
 		printf("%d sending %d to %d\n", pid, value, who);
-		ipc_send(who, value);
-		printf("done sending.\n");
+		printf("send msg: %d %d %d\n", msg[0], msg[1], msg[2]);
+		ipc_send(who, value, pg, 0);
 	} else {
-		printf("in proc pid %d\n", pid);
-		int i = ipc_recv(&who, 0);
-		printf("%d recved %d from parent %d!!!!!!!!!!!!!!!!!!!!!\n", pid, i, who);
+		int i = ipc_recv(&who, pg, 0);
+		int *msg = (int *)pg;
+		printf("%d recved %d from %d\n", pid, i, who);
+		printf("recv msg: %d %d %d\n", msg[0], msg[1], msg[2]);
 	}
 	exit(0);
 }

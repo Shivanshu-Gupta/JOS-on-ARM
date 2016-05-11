@@ -45,17 +45,12 @@ void wait(int id);
 int page_alloc(int pid, uint32_t va, int perm);
 int page_map(int srcpid, uint32_t srcva, int destpid, uint32_t destva, int perm);
 int page_unmap(int pid, uint32_t va);
-// int sys_ipc_try_send(int pid, uint32_t value, uint32_t srcva, int perm);
-// int sys_ipc_recv(uint32_t dstva); 
-// void sys_ipc_data(int *srcpid, uint32_t *value, int *perm_store);
-int sys_ipc_try_send(int pid, uint32_t value);
+int sys_ipc_try_send(int pid, uint32_t value, uint32_t srcva, uint32_t perm);
 int sys_ipc_recv(uint32_t dstva); 
-void sys_ipc_data(int *srcpid, uint32_t *value);
+void sys_ipc_data(int *srcpid, uint32_t *value, uint32_t *perm_store);
 
 // lib/ipc.c
-// void ipc_send(int destpid, uint32_t val, void *pg, int perm);
-// uint32_t ipc_recv(int *srcpid, void *pg, int *perm_store);
-void ipc_send(int destpid, uint32_t val);
-uint32_t ipc_recv(int *srcpid, void *pg);
+void ipc_send(int destpid, uint32_t val, void *pg, uint32_t perm);
+uint32_t ipc_recv(int *srcpid, void *pg, uint32_t *perm_store);
 
 #endif
